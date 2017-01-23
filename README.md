@@ -6,7 +6,9 @@
 # Data Augmentation/Generation
 * I found that the best approach to getting the car to drive successfully was by using different aumentation techinques to create additional data. The augmentation techniques included flipping, changing brightness, xy translating, and using the left/right images. The steering angles were all changed accordingly.
 
-* The data is not all loaded into memory at once, they are loaded as needed. The generator "batch_generator" genreates data based on the batch size and each data augmentaion is done with some probability in the generator. 
+* The data is not all loaded into memory at once, they are loaded as needed. The generator "batch_generator" genreates data based on the batch size and each data augmentaion is done with some probability in the generator. Some exmaples of images are listed below:
+
+![alt tag](https://github.com/SyedAzizEnam/CarND-Project3/blob/master/images.png)
 
 # Network Architecture
 * Experiments were conducted to choose the best architecture for this problem. Initially I had used my model from project 2 as a baseline afterwards I tired different transfer learning approaches by using GoogLeNet/Alexnet. In the end the architecture that worked best on my validation set and on the track was the architecture used in the end-to-end system developed by Nvidia. The network consist of static normalization layer -> 5 convolutional layers -> 4 full connected layers illustrated below:
