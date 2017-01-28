@@ -101,9 +101,13 @@ val_data = batch_generator(df_val,val_data_path,batch_size=1024,img_rows=img_row
 model = Sequential()
 model.add(Lambda(lambda x: x/127.5 - 1., input_shape=(img_rows, img_cols, 3), name='Normalization'))
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), activation='relu', name='Conv1'))
+model.add(Dropout(0.2))
 model.add(Convolution2D(36, 5, 5, subsample=(2,2), activation='relu', name='Conv2'))
+model.add(Dropout(0.2))
 model.add(Convolution2D(48, 5, 5, subsample=(2,2), activation='relu', name='Conv3'))
+model.add(Dropout(0.2))
 model.add(Convolution2D(64, 3, 3, activation='relu', name='Conv4'))
+model.add(Dropout(0.2))
 model.add(Convolution2D(64, 3, 3, activation='relu', name='Conv5'))
 model.add(Flatten())
 model.add(Dense(1164, activation='relu', name='FC1'))
@@ -123,7 +127,7 @@ model_json = model.to_json()
 with open('model.json', "w") as json_file:
     json_file.write(model_json)
 
-checkpointer = ModelCheckpoint(filepath="model.h5", verbose=1, save_best_only=True)
+checkpointer = ModelCheckpoint(filepath="model.h5", verbose=1,save_weights_only=True, save_best_only=True)
 model.fit_generator(generator=train_data,
                     validation_data=val_data,
                     samples_per_epoch=50000,
