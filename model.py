@@ -131,6 +131,7 @@ checkpointer = ModelCheckpoint(filepath="model.h5", verbose=1,save_weights_only=
 model.fit_generator(generator=train_data,
                     validation_data=val_data,
                     samples_per_epoch=50000,
+                    nb_val_samples=1,
                     nb_epoch=10,
                     verbose=1,
                     callbacks=[checkpointer])
