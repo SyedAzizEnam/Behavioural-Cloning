@@ -90,13 +90,13 @@ columns = ['center', 'left', 'right', 'steering', 'throttle', 'brake', 'speed']
 df_train = pd.read_csv(data_path+'driving_log.csv', names=columns)
 df_train.drop(df_train.index[[0]], inplace=True)
 df_train.dropna(how='any', axis=0, inplace=True)
-"""
+
 df_val = pd.read_csv(val_data_path+'driving_log.csv', names=columns)
 df_val.drop(df_val.index[[0]], inplace=True)
 df_val.dropna(how='any', axis=0, inplace=True)
-"""
+
 train_data = batch_generator(df_train,data_path,batch_size=300,img_rows=img_rows,img_cols=img_cols)
-#val_data = batch_generator(df_val,val_data_path,batch_size=1024,img_rows=img_rows,img_cols=img_cols)
+val_data = batch_generator(df_val,val_data_path,batch_size=1024,img_rows=img_rows,img_cols=img_cols)
 
 model = Sequential()
 model.add(Lambda(lambda x: x/127.5 - 1., input_shape=(img_rows, img_cols, 3), name='Normalization'))
@@ -119,11 +119,14 @@ model.summary()
 opt = Adam(lr=0.00001)
 model.compile(optimizer=opt, loss='mse', metrics=[])
 
-model.fit_generator(train_data,
-                    samples_per_epoch = 50000,
-                    nb_epoch=10, verbose=1)
-
 model_json = model.to_json()
 with open('model.json', "w") as json_file:
     json_file.write(model_json)
-model.save_weights('model.h5')
+
+checkpointer = ModelCheckpoint(filepath="model.h5", verbose=1, save_best_only=True)
+model.fit_generator(generator=train_data,
+                    validation_data=val_data,
+                    samples_per_epoch=50000,
+                    nb_epoch=10,
+                    verbose=1,
+                    callbacks=[checkpointer])
