@@ -10,7 +10,7 @@
 # Data Augmentation/Generation
 * I found that the best approach to getting the car to drive successfully was by using different aumentation techinques to create additional data. The augmentation techniques included flipping, changing brightness, xy translating, and using the left/right images. The steering angles were all changed accordingly.
 
-* The data is not all loaded into memory at once, they are loaded as needed. The generator "batch_generator" genreates data based on the batch size and each data augmentaion is done with some probability in the generator. Some exmaples of images are listed below:
+* The data is not all loaded into memory at once, they are loaded as needed. The generator "batch_generator" genreates data based on the batch size and each data augmentaion is done with some probability in the generator. Some examples of images are listed below:
 
 ![alt tag](https://github.com/SyedAzizEnam/CarND-Project3/blob/master/images.png)
 
